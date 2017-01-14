@@ -92,6 +92,7 @@ public class PlayState implements Screen{
     }
     public TiledMap getMap(){return map; }
     public void handleInput(float dt) {
+
         if(Gdx.input.isTouched()) {
             //gameCam.position.y += 100 * dt;
             if((Gdx.input.getX() <= (Gdx.graphics.getWidth()/2))&& kid.b2body.getLinearVelocity().x >= -2){
@@ -105,9 +106,8 @@ public class PlayState implements Screen{
 
 
     public void update(float dt) {
-         kid.b2body.setLinearVelocity(0,1f);
+        kid.b2body.setLinearVelocity(0,1f);
         gameCam.position.y = kid.b2body.getPosition().y+gameCam.viewportHeight/2 - kid.getHeight();
-
         handleInput(dt);
         world.step(1/60f, 6, 2);
         kid.update(dt);
