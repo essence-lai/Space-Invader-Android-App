@@ -25,7 +25,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.elai.game.KidInvader;
 import com.elai.game.Scenes.Hud;
 import com.elai.game.Sprites.Kid;
+import com.elai.game.Sprites.Obstacle;
 import com.elai.game.Tools.B2WorldCreater;
+import com.elai.game.Tools.WorldContactListener;
 
 /**
  * Created by essen on 2017-01-07.
@@ -33,7 +35,6 @@ import com.elai.game.Tools.B2WorldCreater;
 
 public class PlayState implements Screen{
     private Texture texture;
-    private Kid kid;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
     private KidInvader game;
@@ -52,6 +53,8 @@ public class PlayState implements Screen{
     private Box2DDebugRenderer b2dr;
 
     //Sprites
+    private Kid kid;
+    private Obstacle obstacle;
 
     public PlayState( KidInvader game) {
         this.game = game;
@@ -84,6 +87,13 @@ public class PlayState implements Screen{
         //create kid
         kid = new Kid(this);
 
+        //create obstacles
+        obstacle = new Obstacle(this, 500);
+
+
+        //world contact listener
+        world.setContactListener( new WorldContactListener());
+
 
     }
 
@@ -96,7 +106,7 @@ public class PlayState implements Screen{
         if(Gdx.input.isTouched()) {
             //gameCam.position.y += 100 * dt;
             if((Gdx.input.getX() <= (Gdx.graphics.getWidth()/2))&& kid.b2body.getLinearVelocity().x >= -2){
-                kid.b2body.applyLinearImpulse(new Vector2(-2f,0),kid.b2body.getWorldCenter(),true);
+                    kid.b2body.applyLinearImpulse(new Vector2(-2f,0),kid.b2body.getWorldCenter(),true);
             }else if ((Gdx.input.getX() > (Gdx.graphics.getWidth()/2))&& kid.b2body.getLinearVelocity().x  <= 2) {
                 kid.b2body.applyLinearImpulse(new Vector2(2f,0),kid.b2body.getWorldCenter(),true);
             }
@@ -106,11 +116,11 @@ public class PlayState implements Screen{
 
 
     public void update(float dt) {
-        kid.b2body.setLinearVelocity(0,1f);
-        gameCam.position.y = kid.b2body.getPosition().y+gameCam.viewportHeight/2 - kid.getHeight();
+        //kid.b2body.setLinearVelocity(0,1f);
+        //gameCam.position.y = kid.b2body.getPosition().y+gameCam.viewportHeight/2 - kid.getHeight();
         handleInput(dt);
-        world.step(1/60f, 6, 2);
         kid.update(dt);
+        world.step(1/60f, 6, 2);
         //gameCam.position.x = kid.b2body.getPosition().x;
         gameCam.update();
         renderer.setView(gameCam);
@@ -145,6 +155,7 @@ public class PlayState implements Screen{
         game.batch.begin();
         //game.batch.setProjectionMatrix(gameCam.combined);
         kid.draw(game.batch);
+        obstacle.draw(game.batch);
         //game.batch.draw(texture,0,0);
         game.batch.end();
         //draw hud
@@ -173,6 +184,7 @@ public class PlayState implements Screen{
 
     }
 
+
     @Override
     public void resume() {
 
@@ -182,4 +194,5 @@ public class PlayState implements Screen{
     public void hide() {
 
     }
+
 }

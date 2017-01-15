@@ -40,20 +40,20 @@ public class Kid extends Sprite{
         defineKid();
 
         //set initial vaules of kid location
-        setBounds(0,0,16/KidInvader.PPM, 16/KidInvader.PPM);
+        setBounds(0,0,22/KidInvader.PPM, 31/KidInvader.PPM);
         setRegion(kidR);
 
     }
 
     public void defineKid(){
         BodyDef bdef = new BodyDef();
-        bdef.position.set(32/KidInvader.PPM,32/KidInvader.PPM);
+        bdef.position.set(KidInvader.M_WIDTH/2/KidInvader.PPM,37/KidInvader.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6/KidInvader.PPM);
+        shape.setRadius(7/KidInvader.PPM);
 
 
         fdef.shape = shape;

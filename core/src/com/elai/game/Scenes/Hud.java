@@ -1,9 +1,11 @@
 package com.elai.game.Scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -19,44 +21,37 @@ import com.elai.game.KidInvader;
 public class Hud implements Disposable{
     public Stage stage;
     private Viewport viewport;
+    private FreeTypeFontGenerator generator;
+    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
 
-    private Integer worldTimer;
-    private float timeCount;
-    private Integer score;
 
-    Label countdownLabel;
-    Label scoreLabel;
-    Label timeLabel;
-    Label levelLabel;
-    Label kidLabel;
-    Label worldLabel;
+
+
+    private static Integer score;
+
+    private static Label scoreLabel;
+
 
     public Hud (SpriteBatch sb){
-        worldTimer = 300;
-        timeCount = 0;
         score = 0;
+
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("Arcadepix Plus.ttf"));
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 225;
 
         viewport = new FitViewport(KidInvader.V_WIDTH,KidInvader.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
+        BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
+
         Table table = new Table();
         table.top();
+        table.padTop(6f);
         table.setFillParent(true);
 
-        countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.DARK_GRAY));
-        scoreLabel =  new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.DARK_GRAY));
-        timeLabel =  new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.DARK_GRAY));
-        worldLabel = new Label("LEVEL", new Label.LabelStyle(new BitmapFont(),Color.DARK_GRAY));
-        levelLabel =  new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.DARK_GRAY));
-        kidLabel = new Label("CHRISTOPHER!", new Label.LabelStyle(new BitmapFont(), Color.DARK_GRAY));
+        scoreLabel =  new Label(String.format("%d", score), new Label.LabelStyle(font, Color.DARK_GRAY));
 
-        table.add(kidLabel).expandX().padTop(10);
-        table.add(worldLabel).expandX().padTop(10);
-        table.add(timeLabel).expandX().padTop(10);
-        table.row();
         table.add(scoreLabel).expandX();
-        table.add(levelLabel).expandX();
-        table.add(countdownLabel).expandX();
 
         stage.addActor(table);
     }
@@ -64,5 +59,11 @@ public class Hud implements Disposable{
     @Override
     public void dispose() {
         stage.dispose();
+        generator.dispose();
+    }
+
+    public static void addScore(int value){
+        score+= value;
+        scoreLabel.setText(String.format("%d", score));
     }
 }
