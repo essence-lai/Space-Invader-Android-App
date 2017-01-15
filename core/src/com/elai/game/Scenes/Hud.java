@@ -29,7 +29,7 @@ public class Hud implements Disposable{
 
     private static Integer score;
 
-    private static Label scoreLabel;
+    public static Label scoreLabel;
 
 
     public Hud (SpriteBatch sb){
@@ -49,7 +49,7 @@ public class Hud implements Disposable{
         table.padTop(6f);
         table.setFillParent(true);
 
-        scoreLabel =  new Label(String.format("%d", score), new Label.LabelStyle(font, Color.DARK_GRAY));
+        scoreLabel =  new Label(String.format("%d", score), new Label.LabelStyle(font, Color.OLIVE));
 
         table.add(scoreLabel).expandX();
 

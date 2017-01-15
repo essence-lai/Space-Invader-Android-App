@@ -69,7 +69,7 @@ public class MenuState implements Screen {
 
 
     public void handleInput() {
-        if(Gdx.input.isTouched()){
+        if(Gdx.input.justTouched()){
 
             game.setScreen(new PlayState((KidInvader)game));
             dispose();

@@ -20,6 +20,11 @@ import com.elai.game.States.PlayState;
  */
 
 public class Kid extends Sprite{
+    public enum State{STANDING,DEAD};
+    public State currentState;
+    public State previousState;
+
+
     public World world;
     public Body b2body;
 
@@ -67,6 +72,10 @@ public class Kid extends Sprite{
 
     public void draw(Batch batch){
         super.draw(batch);
+    }
+
+    public void die(){
+
     }
 
 }

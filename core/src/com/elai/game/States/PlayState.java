@@ -38,6 +38,7 @@ public class PlayState implements Screen{
     private OrthographicCamera gameCam;
     private Viewport gamePort;
     private KidInvader game;
+    private Boolean isGameOver;
 
 
     //Map loader
@@ -59,6 +60,7 @@ public class PlayState implements Screen{
 
 
     public PlayState( KidInvader game) {
+        isGameOver = false;
         this.game = game;
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(KidInvader.M_WIDTH/KidInvader.PPM,KidInvader.M_HEIGHT/KidInvader.PPM,gameCam);
@@ -69,7 +71,7 @@ public class PlayState implements Screen{
 
         //load map
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("kidMap.tmx");
+        map = mapLoader.load("Space_Layer.tmx");
         renderer = new OrthogonalTiledMapRenderer(map,1/KidInvader.PPM);
 
 
@@ -90,7 +92,7 @@ public class PlayState implements Screen{
         kid = new Kid(this);
 
         //create obstacle
-        obstacle = new Obstacle(this,0.32F);
+    //    obstacle = new Obstacle(this,0.32F);
 
         //world contact listener
         world.setContactListener( new WorldContactListener());
@@ -112,19 +114,26 @@ public class PlayState implements Screen{
                 kid.b2body.applyLinearImpulse(new Vector2(2f,0),kid.b2body.getWorldCenter(),true);
             }
         }
+        if(kid.b2body.getPosition().y >= 20){
+           isGameOver = true;
+        }
+
+
+
 
     }
 
 
     public void update(float dt) {
-       // kid.b2body.setLinearVelocity(0,1f);
-       // gameCam.position.y = kid.b2body.getPosition().y+gameCam.viewportHeight/2 - kid.getHeight();
+        kid.b2body.setLinearVelocity(0,1f);
+        gameCam.position.y = kid.b2body.getPosition().y+gameCam.viewportHeight/2 - kid.getHeight();
         handleInput(dt);
         kid.update(dt);
         world.step(1/60f, 6, 2);
         //gameCam.position.x = kid.b2body.getPosition().x;
         gameCam.update();
         renderer.setView(gameCam);
+
 
     }
 
@@ -156,12 +165,17 @@ public class PlayState implements Screen{
         game.batch.begin();
         //game.batch.setProjectionMatrix(gameCam.combined);
         kid.draw(game.batch);
-        obstacle.draw(game.batch);
+     //   obstacle.draw(game.batch);
         //game.batch.draw(texture,0,0);
         game.batch.end();
         //draw hud
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+
+        if(isGameOver){
+            game.setScreen(new GameOverState((Game)game));
+            dispose();
+        }
 
     }
 
@@ -195,5 +209,14 @@ public class PlayState implements Screen{
     public void hide() {
 
     }
+
+    public boolean GameOver(){
+        if(kid.currentState == Kid.State.DEAD){
+            return true;
+        }
+        return false;
+    }
+
+    public Hud getHud(){return hud;}
 
 }
