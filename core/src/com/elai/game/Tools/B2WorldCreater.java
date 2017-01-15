@@ -10,7 +10,9 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.elai.game.KidInvader;
+import com.elai.game.Sprites.Obstacle;
 import com.elai.game.States.PlayState;
 
 /**
@@ -18,6 +20,7 @@ import com.elai.game.States.PlayState;
  */
 
 public class B2WorldCreater {
+    private Array<Obstacle> obstacles;
     public B2WorldCreater(PlayState state){
         World world = state.getWorld();
         TiledMap map = state.getMap();
@@ -40,5 +43,12 @@ public class B2WorldCreater {
             fdef.shape = shape;
             body.createFixture(fdef);
         }
+
+        // for obstacles
+
     }
+    public Array<Obstacle> getObstacles(){
+        return obstacles;
+    }
+
 }

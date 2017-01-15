@@ -51,10 +51,12 @@ public class PlayState implements Screen{
     //Box2d
     private World world;
     private Box2DDebugRenderer b2dr;
+    private B2WorldCreater creator;
 
     //Sprites
     private Kid kid;
     private Obstacle obstacle;
+
 
     public PlayState( KidInvader game) {
         this.game = game;
@@ -87,9 +89,8 @@ public class PlayState implements Screen{
         //create kid
         kid = new Kid(this);
 
-        //create obstacles
-        obstacle = new Obstacle(this, 500);
-
+        //create obstacle
+        obstacle = new Obstacle(this,0.32F);
 
         //world contact listener
         world.setContactListener( new WorldContactListener());
@@ -116,8 +117,8 @@ public class PlayState implements Screen{
 
 
     public void update(float dt) {
-        //kid.b2body.setLinearVelocity(0,1f);
-        //gameCam.position.y = kid.b2body.getPosition().y+gameCam.viewportHeight/2 - kid.getHeight();
+       // kid.b2body.setLinearVelocity(0,1f);
+       // gameCam.position.y = kid.b2body.getPosition().y+gameCam.viewportHeight/2 - kid.getHeight();
         handleInput(dt);
         kid.update(dt);
         world.step(1/60f, 6, 2);

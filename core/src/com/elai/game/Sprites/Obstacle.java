@@ -41,7 +41,7 @@ public class Obstacle extends Sprite {
     public Obstacle(PlayState state, float y){
         this.world  = state.getWorld();
         this.state = state;
-        setPosition(KidInvader.M_WIDTH/KidInvader.PPM,y);
+
 
         leftObstacle = new Texture("obstacle.png");
         rightObstacle = new Texture("obstacle.png");
@@ -51,8 +51,9 @@ public class Obstacle extends Sprite {
 
         rand = new Random();
 
-        setBounds(0,0,85/KidInvader.PPM, 31/KidInvader.PPM);
+        setBounds((rand.nextInt(FLUNCTUATION) + GAP + LOWEST_OPENING)/KidInvader.PPM,y,70/KidInvader.PPM, 31/KidInvader.PPM);
         setRegion(leftObj);
+
         setRegion(rightObj);
 
         defineObstacle(y);
@@ -65,19 +66,21 @@ public class Obstacle extends Sprite {
         BodyDef lbdef = new BodyDef();
         BodyDef rbdef = new BodyDef();
 
-        lbdef.position.set((rand.nextInt(FLUNCTUATION) + GAP + LOWEST_OPENING)/KidInvader.PPM,y);
-        lbdef.type = BodyDef.BodyType.DynamicBody;
+        //lbdef.position.set((rand.nextInt(FLUNCTUATION) + GAP + LOWEST_OPENING),y);
+        lbdef.position.set(KidInvader.M_WIDTH/2/KidInvader.PPM,70/KidInvader.PPM);
+        lbdef.type = BodyDef.BodyType.StaticBody;
         leftBody = world.createBody(lbdef);
 
-        rbdef.position.set((lbdef.position.x - GAP -rightObj.getRegionWidth())/KidInvader.PPM,y);
-        rbdef.type = BodyDef.BodyType.DynamicBody;
+        //rbdef.position.set((lbdef.position.x - GAP -rightObj.getRegionWidth()),y);
+        lbdef.position.set(KidInvader.M_WIDTH/2/KidInvader.PPM, 70/KidInvader.PPM);
+        rbdef.type = BodyDef.BodyType.StaticBody;
         rightBody = world.createBody(rbdef);
 
         FixtureDef lfdef = new FixtureDef();
         FixtureDef rfdef = new FixtureDef();
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(85,57);
+        shape.setAsBox(86,57);
 
 
         lfdef.shape = shape;

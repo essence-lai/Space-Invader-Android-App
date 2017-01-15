@@ -48,6 +48,7 @@ public class Kid extends Sprite{
     public void defineKid(){
         BodyDef bdef = new BodyDef();
         bdef.position.set(KidInvader.M_WIDTH/2/KidInvader.PPM,37/KidInvader.PPM);
+        //bdef.linearVelocity.set(0,0.1f);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
