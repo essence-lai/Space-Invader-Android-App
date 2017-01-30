@@ -67,8 +67,8 @@ public class GameOverState implements Screen {
     }
 
     public void handleInput() {
-        if(Gdx.input.isTouched()){
 
+        if(Gdx.input.justTouched()){
             game.setScreen(new MenuState(game));
             dispose();
         }

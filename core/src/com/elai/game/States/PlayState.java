@@ -114,9 +114,7 @@ public class PlayState implements Screen{
                 kid.b2body.applyLinearImpulse(new Vector2(2f,0),kid.b2body.getWorldCenter(),true);
             }
         }
-        if(kid.b2body.getPosition().y >= 20){
-           isGameOver = true;
-        }
+
 
 
 
@@ -218,5 +216,6 @@ public class PlayState implements Screen{
     }
 
     public Hud getHud(){return hud;}
+
 
 }

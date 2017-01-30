@@ -4,16 +4,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.elai.game.KidInvader;
 import com.elai.game.States.PlayState;
+import com.elai.game.Tools.WorldContactListener;
 
 /**
  * Created by essen on 2017-01-07.
@@ -35,6 +40,7 @@ public class Kid extends Sprite{
     private TextureRegion kidR;
 
     private PlayState state;
+    private Boolean kidIsDead;
 
     public Kid(PlayState state){
         this.state = state;
@@ -64,18 +70,45 @@ public class Kid extends Sprite{
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
+
+        EdgeShape leftSide = new EdgeShape();
+        leftSide.set(new Vector2(-7/KidInvader.PPM,7/KidInvader.PPM),new Vector2(-7/KidInvader.PPM,-7/KidInvader.PPM));
+        fdef.shape = leftSide;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData("leftSide");
+
+        EdgeShape rightSide = new EdgeShape();
+        leftSide.set(new Vector2(7/KidInvader.PPM,7/KidInvader.PPM),new Vector2(7/KidInvader.PPM,-7/KidInvader.PPM));
+        fdef.shape = rightSide;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData("rightSide");
+
+
     }
 
     public void update(float dt){
+
+
         setPosition(b2body.getPosition().x-getWidth()/2,b2body.getPosition().y-getHeight()/2);
     }
 
+    public State getState(){
+        if(kidIsDead)
+            return State.DEAD;
+        return State.STANDING;
+    }
     public void draw(Batch batch){
         super.draw(batch);
     }
 
     public void die(){
+        if(!isDead()){
+            kidIsDead = true;
 
+        }
+    }
+    public boolean isDead(){
+        return kidIsDead;
     }
 
 }
